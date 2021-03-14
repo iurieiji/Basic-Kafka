@@ -1,0 +1,29 @@
+tar -xf kafka_2.11-2.0.0.tgz
+cd kafka_2.11-2.0.0
+
+./bin/zookeeper-server-start.sh config/zookeeper.properties
+./bin/kafka-server-start.sh config/server.properties
+
+bin/kafka-topics.sh --zookeeper localhost:2181 --create --replication-factor 1 --partitions 1 --topic test-1
+bin/kafka-topics.sh --zookeeper localhost:2181 --create --replication-factor 1 --partitions 4 --topic test-2
+bin/kafka-topics.sh --zookeeper localhost:2181 --create --replication-factor 1 --partitions 1 --topic test-3
+bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic trip-v2
+
+// list topics on local machine or college cluster
+bin/kafka-topics.sh --zookeeper localhost:2181 --list
+bin/kafka-topics.sh --zookeeper quickstart.cloudera:2181 --list
+
+// describe specific topic
+bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic test-2
+
+// create new producer and consumer. port of zookeeper is 2181. port of broker is 9092
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test-3
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test-3
+
+// list and describe consumer groups
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group console-consumer-23575
+
+// working on IDE
+  add dependencies
+libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.3.1"
