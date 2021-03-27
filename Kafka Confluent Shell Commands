@@ -1,4 +1,5 @@
 sudo docker-compose exec broker kafka-topics --create --topic example-topic --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
+sudo docker-compose exec broker kafka-topics --delete --topic winter2020_iuri_trip --bootstrap-server broker:9092
 
 // consumer
 sudo docker-compose exec broker bash
