@@ -31,3 +31,6 @@ ctrl+c ctrl+d
 sudo docker-compose exec broker bash
 kafka-console-consumer --topic example-topic --bootstrap-server broker:9092 --from-beginning --property print.key=true --property key.separator=":"
 ctrl+c ctrl+d
+
+// useful links:
+https://kafka-tutorials.confluent.io/kafka-console-consumer-producer-basics/kafka.html#read-all-records
