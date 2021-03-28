@@ -1,27 +1,33 @@
+// starting & stop docker compose
 sudo docker-compose up -d
 sudo docker-compose ps
 sudo docker-compose stop
 sudo docker system prune -a --volumes --filter "label=io.confluent.docker"
 
+//delete subject & schemas
 curl -X DELETE http://localhost:8081/subjects/winter2020_iuri_enriched_trip-value/versions/1
 
+// create & delete topics
 sudo docker-compose exec broker kafka-topics --create --topic example-topic --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
 sudo docker-compose exec broker kafka-topics --delete --topic winter2020_iuri_trip --bootstrap-server broker:9092
 
-// consumer
+// producer #1 in separate terminal
+sudo docker-compose exec broker bash
+kafka-console-producer --topic example-topic --bootstrap-server broker:9092
+ctrl+c ctrl+d
+
+// producer #2 in separate terminal
+sudo docker-compose exec broker bash
+kafka-console-producer --topic example-topic --bootstrap-server broker:9092 --property parse.key=true --property key.separator=":"
+ctrl+c ctrl+d
+
+// consumer #1 in separate terminal
 sudo docker-compose exec broker bash
 kafka-console-consumer --topic example-topic --bootstrap-server broker:9092
 kafka-console-consumer --topic example-topic --bootstrap-server broker:9092 --from-beginning
+ctrl+c ctrl+d
 
-// producer
+// consumer #2 in separate terminal
 sudo docker-compose exec broker bash
-kafka-console-producer --topic example-topic --bootstrap-server broker:9092
-
-// now you can produce messages on producer console. ex:
->the
->lazy
->fox
->jumped over the brown cow
-
-// now you can close the consumer by ctrl+c
-// now you can close the container shell by ctrl+d
+kafka-console-consumer --topic example-topic --bootstrap-server broker:9092 --from-beginning --property print.key=true --property key.separator=":"
+ctrl+c ctrl+d
