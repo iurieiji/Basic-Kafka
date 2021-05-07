@@ -1,8 +1,9 @@
 // https://docs.confluent.io/platform/current/quickstart/cos-quickstart.html
 export CONFLUENT_HOME=/home/iuri/confluent-6.1.1
-...
+export PATH="${CONFLUENT_HOME}/bin:$PATH"
 confluent local services start
 ...
+// to stark KSQL in CLI:
 LOG_DIR=$CONFLUENT_HOME/ksql_logs ksql
 ...
 kafka-topics --list --bootstrap-server localhost:9092
